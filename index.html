@@ -9,38 +9,30 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(-45deg, #8e2de2, #4a00e0, #00c6ff, #6a11cb);
+    background: linear-gradient(-45deg,#8e2de2,#4a00e0,#00c6ff,#6a11cb);
     background-size: 400% 400%;
-    animation: gradient 10s ease infinite;
+    animation: gradient 12s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     color: white;
 }
 
 @keyframes gradient {
-    0% {background-position: 0% 50%;}
-    50% {background-position: 100% 50%;}
-    100% {background-position: 0% 50%;}
+    0% {background-position:0% 50%;}
+    50% {background-position:100% 50%;}
+    100% {background-position:0% 50%;}
 }
 
 .card {
-    width: 360px;
+    width: 380px;
     padding: 25px;
     border-radius: 20px;
-    background: #111;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    background: rgba(0,0,0,0.75);
+    backdrop-filter: blur(15px);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
     text-align: center;
-}
-
-.profile-img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 3px solid #9d50bb;
-    object-fit: cover;
-    margin-bottom: 10px;
 }
 
 .title {
@@ -49,26 +41,50 @@ body {
 }
 
 .subtitle {
-    opacity: 0.8;
+    opacity: 0.7;
     margin-bottom: 10px;
 }
 
-.status {
-    color: #00ff88;
+.tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+}
+
+.tab-btn {
+    flex: 1;
+    padding: 8px;
+    margin: 3px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
     font-weight: bold;
+    background: #222;
+    color: white;
+    transition: 0.3s;
+}
+
+.tab-btn.active {
+    background: linear-gradient(90deg,#9d50bb,#6e48aa);
+}
+
+.tab-btn:hover {
+    opacity: 0.85;
 }
 
 .code-box {
     background: #000;
-    padding: 10px;
-    border-radius: 10px;
-    margin-top: 10px;
+    padding: 12px;
+    border-radius: 12px;
+    margin-top: 15px;
     font-size: 12px;
-    overflow-x: auto;
     text-align: left;
+    word-break: break-all;
+    min-height: 60px;
+    transition: 0.3s;
 }
 
-button {
+.copy-btn {
     width: 100%;
     padding: 12px;
     border: none;
@@ -76,25 +92,17 @@ button {
     margin-top: 12px;
     font-weight: bold;
     cursor: pointer;
+    background: linear-gradient(90deg,#9d50bb,#6e48aa);
+    color: white;
     transition: 0.3s;
 }
 
-.copy-btn {
-    background: linear-gradient(90deg,#9d50bb,#6e48aa);
-    color: white;
-}
-
 .copy-btn:hover {
-    opacity: 0.85;
+    transform: scale(1.03);
 }
 
-.yt-btn {
-    background: linear-gradient(90deg,#ff0000,#cc0000);
-    color: white;
-}
-
-.yt-btn:hover {
-    opacity: 0.85;
+.success {
+    background: #00c853 !important;
 }
 
 .footer {
@@ -109,56 +117,77 @@ button {
 
 <div class="card">
 
-    <img src="profile.jpg" class="profile-img">
+<div class="title">DupeCreatorDev</div>
+<div class="subtitle">Universal Script Hub</div>
+<div>👥 Active Users: <span id="counter">189</span></div>
 
-    <div class="title">DupeCreatorDev</div>
-    <div class="subtitle">Universal Script Hub</div>
-    <div>👥 Active Users: <span id="counter">189</span></div>
+<div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(1)">Universal</button>
+    <button class="tab-btn" onclick="switchTab(2)">MM2</button>
+    <button class="tab-btn" onclick="switchTab(3)">Adopt Me</button>
+</div>
 
-    <h3>Script</h3>
-    <div class="status">🟢 STATUS: WORKING </div>
+<div class="code-box" id="scriptBox"></div>
+<button class="copy-btn" id="copyBtn" onclick="copyScript()">📋 Copy Script</button>
 
-    <div class="code-box" id="script">
- loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()
-    </div>
-
-    <button class="copy-btn" onclick="copyScript()">📋 Copy Script</button>
-
-    <a href="https://youtube.com/@dupecreatordev?si=FUeDPcs0QeQiPUsC" target="_blank">
-        <button class="yt-btn">▶ Subcribe To My YouTube Channel</button>
-    </a>
-
-    <div class="footer">
-        © 2026 DupeCreatorDev • All Rights Reserved
-    </div>
+<div class="footer">
+© 2026 DupeCreatorDev • All Rights Reserved
+</div>
 
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+document.addEventListener("DOMContentLoaded", function(){
 
-    // Copy function
-    window.copyScript = function () {
-        const text = document.getElementById("script").innerText;
-        navigator.clipboard.writeText(text);
-        alert("Copied!");
-    };
+const scripts = {
+1: 'loadstring(game:HttpGet("https://yourlink1.com/script.lua"))()',
+2: 'loadstring(game:HttpGet("https://yourlink2.com/script.lua"))()',
+3: 'loadstring(game:HttpGet("https://yourlink3.com/script.lua"))()'
+};
 
-    // Random Live Counter
-    let counter = document.getElementById("counter");
-    let current = 189;
+let currentTab = 1;
+const scriptBox = document.getElementById("scriptBox");
+const copyBtn = document.getElementById("copyBtn");
 
-    setInterval(() => {
-        let change = Math.floor(Math.random() * 3) - 1; 
-        // -1, 0, or +1
+function updateScript(){
+    scriptBox.style.opacity = 0;
+    setTimeout(()=>{
+        scriptBox.innerText = scripts[currentTab];
+        scriptBox.style.opacity = 1;
+    },150);
+}
 
-        current += change;
+window.switchTab = function(tab){
+    currentTab = tab;
+    document.querySelectorAll(".tab-btn").forEach(btn=>btn.classList.remove("active"));
+    document.querySelectorAll(".tab-btn")[tab-1].classList.add("active");
+    updateScript();
+}
 
-        if (current < 170) current = 170;
-        if (current > 220) current = 220;
+window.copyScript = function(){
+    navigator.clipboard.writeText(scripts[currentTab]).then(()=>{
+        copyBtn.innerText = "✅ Copied!";
+        copyBtn.classList.add("success");
+        setTimeout(()=>{
+            copyBtn.innerText = "📋 Copy Script";
+            copyBtn.classList.remove("success");
+        },1500);
+    });
+}
 
-        counter.textContent = current;
-    }, 1000);
+updateScript();
+
+// Smooth Counter
+let counter = document.getElementById("counter");
+let current = 189;
+
+setInterval(()=>{
+    let change = Math.floor(Math.random()*3)-1;
+    current += change;
+    if(current < 170) current = 170;
+    if(current > 220) current = 220;
+    counter.textContent = current;
+},1000);
 
 });
 </script>
