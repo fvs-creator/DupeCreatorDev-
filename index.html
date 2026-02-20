@@ -9,7 +9,9 @@
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(135deg, #8e2de2, #4a00e0, #00c6ff);
+    background: linear-gradient(-45deg, #8e2de2, #4a00e0, #00c6ff, #6a11cb);
+    background-size: 400% 400%;
+    animation: gradient 10s ease infinite;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -17,8 +19,14 @@ body {
     color: white;
 }
 
+@keyframes gradient {
+    0% {background-position: 0% 50%;}
+    50% {background-position: 100% 50%;}
+    100% {background-position: 0% 50%;}
+}
+
 .card {
-    width: 350px;
+    width: 360px;
     padding: 25px;
     border-radius: 20px;
     background: #111;
@@ -42,7 +50,7 @@ body {
 
 .subtitle {
     opacity: 0.8;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
 }
 
 .status {
@@ -57,6 +65,7 @@ body {
     margin-top: 10px;
     font-size: 12px;
     overflow-x: auto;
+    text-align: left;
 }
 
 button {
@@ -64,21 +73,28 @@ button {
     padding: 12px;
     border: none;
     border-radius: 12px;
-    margin-top: 15px;
-    background: linear-gradient(90deg,#9d50bb,#6e48aa);
-    color: white;
+    margin-top: 12px;
     font-weight: bold;
     cursor: pointer;
+    transition: 0.3s;
 }
 
-button:hover {
-    opacity: 0.9;
+.copy-btn {
+    background: linear-gradient(90deg,#9d50bb,#6e48aa);
+    color: white;
 }
 
-.features {
-    margin-top: 15px;
-    font-size: 14px;
-    text-align: left;
+.copy-btn:hover {
+    opacity: 0.85;
+}
+
+.yt-btn {
+    background: linear-gradient(90deg,#ff0000,#cc0000);
+    color: white;
+}
+
+.yt-btn:hover {
+    opacity: 0.85;
 }
 
 .footer {
@@ -93,33 +109,28 @@ button:hover {
 
 <div class="card">
 
-    <!-- PROFILE IMAGE -->
     <img src="profile.jpg" class="profile-img">
 
     <div class="title">DupeCreatorDev 🔥</div>
-    <div class="subtitle">Premium Script Hub</div>
+    <div class="subtitle">Universal Script Hub</div>
     <div>👥 Active Users: 189</div>
 
     <h3>Script</h3>
     <div class="status">🟢 WORKING</div>
 
     <div class="code-box" id="script">
-loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()
+-- loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()
+print("DupeCreatorDev Loaded")
     </div>
 
-    <button onclick="copyScript()">📋 Copy Script</button>
+    <button class="copy-btn" onclick="copyScript()">📋 Copy Script</button>
 
-    <div class="features">
-        ✨ Features
-        <ul>
-            <li>Fast Execution</li>
-            <li>Auto Updates</li>
-            <li>Secure Loader</li>
-        </ul>
-    </div>
+    <a href="https://youtube.com/@dupecreatordev?si=FUeDPcs0QeQiPUsC" target="_blank">
+        <button class="yt-btn">▶ Visit My YouTube Channel</button>
+    </a>
 
     <div class="footer">
-        © 2026 DupeCreatorDev • Educational Purpose Only
+        © 2026 DupeCreatorDev • All Rights Reserved
     </div>
 
 </div>
@@ -128,7 +139,7 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/re
 function copyScript() {
     const text = document.getElementById("script").innerText;
     navigator.clipboard.writeText(text);
-    alert("Script Copied!");
+    alert("Copied!");
 }
 </script>
 
