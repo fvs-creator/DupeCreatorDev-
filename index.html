@@ -113,7 +113,7 @@ button {
 
     <div class="title">DupeCreatorDev 🔥</div>
     <div class="subtitle">Universal Script Hub</div>
-    <div>👥 Active Users: <span id="counter">0</span></div>
+    <div>👥 Active Users: <span id="counter">189</span></div>
 
     <h3>Script</h3>
     <div class="status">🟢 WORKING</div>
@@ -142,21 +142,22 @@ function copyScript() {
     alert("Copied!");
 }
 
-// Animated Counter
-let count = 0;
-let target = 189; // change this number anytime
-let speed = 15; // smaller = faster
-
+// Live fluctuating counter
 let counter = document.getElementById("counter");
+let current = 189;
 
-let updateCounter = setInterval(() => {
-    count++;
-    counter.innerText = count;
+setInterval(() => {
+    let change = Math.floor(Math.random() * 5) - 2; 
+    // -2 to +2 random movement
 
-    if (count >= target) {
-        clearInterval(updateCounter);
-    }
-}, speed);
+    current += change;
+
+    // keep between 170 and 220
+    if (current < 170) current = 170;
+    if (current > 220) current = 220;
+
+    counter.innerText = current;
+}, 1000);
 </script>
 
 </body>
