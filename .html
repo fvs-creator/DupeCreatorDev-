@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DupeCreatorDev</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #8e2de2, #4a00e0, #00c6ff);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    color: white;
+}
+
+.card {
+    width: 350px;
+    padding: 25px;
+    border-radius: 20px;
+    background: #111;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    text-align: center;
+}
+
+.profile-img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    border: 3px solid #9d50bb;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.subtitle {
+    opacity: 0.8;
+    margin-bottom: 15px;
+}
+
+.status {
+    color: #00ff88;
+    font-weight: bold;
+}
+
+.code-box {
+    background: #000;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 12px;
+    overflow-x: auto;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 12px;
+    margin-top: 15px;
+    background: linear-gradient(90deg,#9d50bb,#6e48aa);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.features {
+    margin-top: 15px;
+    font-size: 14px;
+    text-align: left;
+}
+
+.footer {
+    margin-top: 15px;
+    font-size: 12px;
+    opacity: 0.6;
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <!-- PROFILE IMAGE -->
+    <img src="profile.jpg" class="profile-img">
+
+    <div class="title">DupeCreatorDev 🔥</div>
+    <div class="subtitle">Premium Script Hub</div>
+    <div>👥 Active Users: 189</div>
+
+    <h3>Script</h3>
+    <div class="status">🟢 WORKING</div>
+
+    <div class="code-box" id="script">
+loadstring(game:HttpGet("https://yourlinkhere.lua"))()
+    </div>
+
+    <button onclick="copyScript()">📋 Copy Script</button>
+
+    <div class="features">
+        ✨ Features
+        <ul>
+            <li>Fast Execution</li>
+            <li>Auto Updates</li>
+            <li>Secure Loader</li>
+        </ul>
+    </div>
+
+    <div class="footer">
+        © 2026 DupeCreatorDev • Educational Purpose Only
+    </div>
+
+</div>
+
+<script>
+function copyScript() {
+    const text = document.getElementById("script").innerText;
+    navigator.clipboard.writeText(text);
+    alert("Script Copied!");
+}
+</script>
+
+</body>
+</html>
