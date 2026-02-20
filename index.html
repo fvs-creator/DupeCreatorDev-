@@ -136,28 +136,32 @@ print("DupeCreatorDev Loaded")
 </div>
 
 <script>
-function copyScript() {
-    const text = document.getElementById("script").innerText;
-    navigator.clipboard.writeText(text);
-    alert("Copied!");
-}
+document.addEventListener("DOMContentLoaded", function () {
 
-// Live fluctuating counter
-let counter = document.getElementById("counter");
-let current = 189;
+    // Copy function
+    window.copyScript = function () {
+        const text = document.getElementById("script").innerText;
+        navigator.clipboard.writeText(text);
+        alert("Copied!");
+    };
 
-setInterval(() => {
-    let change = Math.floor(Math.random() * 5) - 2; 
-    // -2 to +2 random movement
+    // Random Live Counter
+    let counter = document.getElementById("counter");
+    let current = 189;
 
-    current += change;
+    setInterval(() => {
+        let change = Math.floor(Math.random() * 3) - 1; 
+        // -1, 0, or +1
 
-    // keep between 170 and 220
-    if (current < 170) current = 170;
-    if (current > 220) current = 220;
+        current += change;
 
-    counter.innerText = current;
-}, 1000);
+        if (current < 170) current = 170;
+        if (current > 220) current = 220;
+
+        counter.textContent = current;
+    }, 1000);
+
+});
 </script>
 
 </body>
