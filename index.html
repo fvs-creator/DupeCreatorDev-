@@ -6,38 +6,42 @@
 <title>DupeCreatorDev</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: linear-gradient(-45deg,#8e2de2,#4a00e0,#00c6ff,#6a11cb);
-    background-size: 400% 400%;
-    animation: gradient 12s ease infinite;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    background: #0a0a12;
+    overflow: hidden;
     color: white;
 }
 
-@keyframes gradient {
-    0% {background-position:0% 50%;}
-    50% {background-position:100% 50%;}
-    100% {background-position:0% 50%;}
+#particles {
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
 }
 
+/* CARD */
 .card {
-    width: 380px;
+    position: relative;
+    z-index: 2;
+    width: 95%;
+    max-width: 420px;
+    margin: 40px auto;
     padding: 25px;
     border-radius: 20px;
-    background: rgba(0,0,0,0.75);
-    backdrop-filter: blur(15px);
-    box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+    background: rgba(15,15,25,0.9);
+    backdrop-filter: blur(20px);
     text-align: center;
+    transition: 0.3s;
 }
 
 .title {
     font-size: 26px;
     font-weight: bold;
+    margin-bottom: 5px;
 }
 
 .subtitle {
@@ -45,45 +49,47 @@ body {
     margin-bottom: 10px;
 }
 
+.counter {
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+/* TABS */
 .tabs {
     display: flex;
-    justify-content: space-between;
-    margin-top: 15px;
 }
 
 .tab-btn {
     flex: 1;
     padding: 8px;
     margin: 3px;
-    border-radius: 10px;
+    border-radius: 8px;
     border: none;
-    cursor: pointer;
-    font-weight: bold;
-    background: #222;
+    background: #111;
     color: white;
+    cursor: pointer;
     transition: 0.3s;
+    font-size: 12px;
 }
 
 .tab-btn.active {
-    background: linear-gradient(90deg,#9d50bb,#6e48aa);
+    font-weight: bold;
 }
 
-.tab-btn:hover {
-    opacity: 0.85;
-}
-
+/* SCRIPT BOX */
 .code-box {
     background: #000;
     padding: 12px;
     border-radius: 12px;
     margin-top: 15px;
-    font-size: 12px;
+    font-size: 11px;
     text-align: left;
     word-break: break-all;
     min-height: 60px;
     transition: 0.3s;
 }
 
+/* COPY BUTTON */
 .copy-btn {
     width: 100%;
     padding: 12px;
@@ -92,37 +98,38 @@ body {
     margin-top: 12px;
     font-weight: bold;
     cursor: pointer;
-    background: linear-gradient(90deg,#9d50bb,#6e48aa);
-    color: white;
     transition: 0.3s;
+    color: black;
 }
 
 .copy-btn:hover {
-    transform: scale(1.03);
+    transform: scale(1.05);
 }
 
 .success {
-    background: #00c853 !important;
+    background: #00ff88 !important;
 }
 
 .footer {
     margin-top: 15px;
-    font-size: 12px;
-    opacity: 0.6;
+    font-size: 11px;
+    opacity: 0.5;
 }
 </style>
 </head>
 
 <body>
 
-<div class="card">
+<canvas id="particles"></canvas>
+
+<div class="card" id="card">
 
 <div class="title">DupeCreatorDev</div>
-<div class="subtitle">Universal Script Hub</div>
-<div>👥 Active Users: <span id="counter">189</span></div>
+<div class="subtitle">Cyber Script Hub</div>
+<div class="counter">👥 Active Users: <span id="counter">189</span></div>
 
 <div class="tabs">
-    <button class="tab-btn active" onclick="switchTab(1)">Universal Hub for ETFB</button>
+    <button class="tab-btn active" onclick="switchTab(1)">ETFB Only</button>
     <button class="tab-btn" onclick="switchTab(2)">MM2</button>
     <button class="tab-btn" onclick="switchTab(3)">Adopt Me</button>
 </div>
@@ -130,66 +137,123 @@ body {
 <div class="code-box" id="scriptBox"></div>
 <button class="copy-btn" id="copyBtn" onclick="copyScript()">📋 Copy Script</button>
 
-<div class="footer">
-© 2026 DupeCreatorDev • All Rights Reserved
-</div>
+<div class="footer">© 2026 DupeCreatorDev</div>
 
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
+/* PARTICLES WITH LINES */
+const canvas = document.getElementById("particles");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
 
-const scripts = {
-1: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()',
-2: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-mm2/refs/heads/main/loader.lua"))()',
-3: 'loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-adm/refs/heads/main/universal.lua"))()'
-};
-
-let currentTab = 1;
-const scriptBox = document.getElementById("scriptBox");
-const copyBtn = document.getElementById("copyBtn");
-
-function updateScript(){
-    scriptBox.style.opacity = 0;
-    setTimeout(()=>{
-        scriptBox.innerText = scripts[currentTab];
-        scriptBox.style.opacity = 1;
-    },150);
+let particles = [];
+for(let i=0;i<70;i++){
+    particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        dx:(Math.random()-0.5)*1,
+        dy:(Math.random()-0.5)*1,
+        r:2
+    });
 }
 
-window.switchTab = function(tab){
-    currentTab = tab;
+function animate(){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    ctx.fillStyle="#00f7ff";
+
+    particles.forEach(p=>{
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fill();
+        p.x+=p.dx;
+        p.y+=p.dy;
+
+        if(p.x<0||p.x>canvas.width)p.dx*=-1;
+        if(p.y<0||p.y>canvas.height)p.dy*=-1;
+    });
+
+    for(let i=0;i<particles.length;i++){
+        for(let j=i;j<particles.length;j++){
+            let dx=particles[i].x-particles[j].x;
+            let dy=particles[i].y-particles[j].y;
+            let dist=Math.sqrt(dx*dx+dy*dy);
+            if(dist<100){
+                ctx.strokeStyle="rgba(0,247,255,0.1)";
+                ctx.beginPath();
+                ctx.moveTo(particles[i].x,particles[i].y);
+                ctx.lineTo(particles[j].x,particles[j].y);
+                ctx.stroke();
+            }
+        }
+    }
+
+    requestAnimationFrame(animate);
+}
+animate();
+
+/* SCRIPTS */
+const scripts={
+1:'loadstring(game:HttpGet("https://your-etfb-link.com/script.lua"))()',
+2:'loadstring(game:HttpGet("https://your-mm2-link.com/script.lua"))()',
+3:'loadstring(game:HttpGet("https://your-adoptme-link.com/script.lua"))()'
+};
+
+const colors={
+1:"#ff003c", // ETFB red
+2:"#a855f7", // MM2 purple
+3:"#00f7ff"  // Adopt Me cyan
+};
+
+let currentTab=1;
+const scriptBox=document.getElementById("scriptBox");
+const copyBtn=document.getElementById("copyBtn");
+const card=document.getElementById("card");
+
+function updateTheme(){
+    const color=colors[currentTab];
+    card.style.boxShadow=`0 0 30px ${color}55`;
+    copyBtn.style.background=color;
+    scriptBox.style.border=`1px solid ${color}55`;
+}
+
+function updateScript(){
+    scriptBox.innerText=scripts[currentTab];
+    updateTheme();
+}
+
+window.switchTab=function(tab){
+    currentTab=tab;
     document.querySelectorAll(".tab-btn").forEach(btn=>btn.classList.remove("active"));
     document.querySelectorAll(".tab-btn")[tab-1].classList.add("active");
     updateScript();
 }
 
-window.copyScript = function(){
+window.copyScript=function(){
     navigator.clipboard.writeText(scripts[currentTab]).then(()=>{
-        copyBtn.innerText = "✅ Copied!";
+        copyBtn.innerText="✅ Copied!";
         copyBtn.classList.add("success");
         setTimeout(()=>{
-            copyBtn.innerText = "📋 Copy Script";
+            copyBtn.innerText="📋 Copy Script";
             copyBtn.classList.remove("success");
+            updateTheme();
         },1500);
     });
 }
 
 updateScript();
 
-// Smooth Counter
-let counter = document.getElementById("counter");
-let current = 189;
-
+/* LIVE COUNTER */
+let counter=document.getElementById("counter");
+let current=189;
 setInterval(()=>{
-    let change = Math.floor(Math.random()*3)-1;
-    current += change;
-    if(current < 170) current = 170;
-    if(current > 220) current = 220;
-    counter.textContent = current;
+    let change=Math.floor(Math.random()*3)-1;
+    current+=change;
+    if(current<170)current=170;
+    if(current>220)current=220;
+    counter.textContent=current;
 },1000);
-
-});
 </script>
 
 </body>
