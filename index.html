@@ -119,7 +119,7 @@ button {
     <div class="status">🟢 WORKING</div>
 
     <div class="code-box" id="script">
--- loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()
+ loadstring(game:HttpGet("https://raw.githubusercontent.com/fvs-creator/FVS-vs/refs/heads/main/loader.lua"))()
 print("DupeCreatorDev Loaded")
     </div>
 
@@ -141,6 +141,22 @@ function copyScript() {
     navigator.clipboard.writeText(text);
     alert("Copied!");
 }
+
+// Animated Counter
+let count = 0;
+let target = 189; // change this number anytime
+let speed = 15; // smaller = faster
+
+let counter = document.getElementById("counter");
+
+let updateCounter = setInterval(() => {
+    count++;
+    counter.innerText = count;
+
+    if (count >= target) {
+        clearInterval(updateCounter);
+    }
+}, speed);
 </script>
 
 </body>
